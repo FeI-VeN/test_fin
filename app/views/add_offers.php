@@ -8,10 +8,10 @@
         <section class="sections-general">
             <div class="container-general">
                 <h1 class="txt__level-2">
-                    Статистика по офферам
+                    Управление офферами
                 </h1>
                 <div class="form-block mt-4">
-                    <form class="form row need-validation">
+                    <form class="form row need-validation" method="post">
                         <div class="col-12 mb-3">
                             <label for="file_loader">Изображение</label>
                             <input type="file" class="form-control" id="file_loader" name="file_loader" aria-label="file example" required>
@@ -22,32 +22,32 @@
                         <div class="col-sm-4 position-relative mb-3">
                             <label for="name_offers" class="form-label">Название</label>
                             <input type="text" class="form-control" id="name_offers" name="name_offers" value="Название" required>
-                            <div class="invalid-tooltip">
+                            <div class="invalid-tooltip <?php if (isset($errors['name_offers'])):?> d-block <?php endif;?>">
                                 Введите название.
                             </div>
                         </div>
                         <div class="col-sm-4 position-relative mb-3">
-                            <label for="rating_offers" class="form-label">Оценка</label>
-                            <input type="number" class="form-control" id="rating_offers" name="rating_offers" value="Оценка" required>
-                            <div class="invalid-tooltip">
+                            <label for="rating" class="form-label">Оценка</label>
+                            <input type="number" class="form-control" id="rating" name="rating" value="Оценка" required>
+                            <div class="invalid-tooltip <?php if (isset($errors['ratting'])):?> d-block <?php endif;?>">
                                 Введите число.
                             </div>
                         </div>
                         <div class="col-sm-4 position-relative mb-3">
-                            <label for="sum" class="form-label">Сумма</label>
-                            <input type="number" class="form-control" id="sum" name="sum" value="Сумма" required>
-                            <div class="invalid-tooltip">
+                            <label for="sum_offer" class="form-label">Сумма</label>
+                            <input type="number" class="form-control" id="sum_offer" name="sum_offer" value="Сумма" required>
+                            <div class="invalid-tooltip <?php if (isset($errors['sum_offer'])):?> d-block <?php endif;?>">
                                 Введите число.
                             </div>
                         </div>
                         <div class="col-12 position-relative mb-3">
-                            <label for="basic_url" class="form-label">Ваш URL-адрес</label>
+                            <label for="url_offer" class="form-label">Ваш URL-адрес</label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-                                <input type="text" class="form-control" id="basic_url" name="basic_url" aria-describedby="basic-addon3 basic-addon4" required>
+                                <input type="text" class="form-control" id="url_offer" name="url_offer" aria-describedby="basic-addon3 basic-addon4" required>
                             </div>
                             <div class="form-text" id="basic-addon4">Пример текста справки выходит за пределы группы ввода.</div>
-                            <div class="invalid-tooltip">
+                            <div class="invalid-tooltip <?php if (isset($errors['url_offer'])):?> d-block <?php endif;?>">
                                 Введите url.
                             </div>
                         </div>
@@ -56,24 +56,28 @@
                             <textarea class="form-control" id="special_offer" name="special_offer" placeholder="Введите специальное предложение"></textarea>
                         </div>
                         <div class="col-sm-4 position-relative mb-3">
-                            <label for="first_loan" class="form-label">Первый займ</label>
-                            <input type="text" class="form-control" id="first_loan" name="first_loan" value="Первый займ" required>
-                            <div class="invalid-tooltip">
+                            <label for="loan" class="form-label">Первый займ</label>
+                            <input type="text" class="form-control" id="loan" name="loan" value="Первый займ" required>
+                            <div class="invalid-tooltip <?php if (isset($errors['loan'])):?> d-block <?php endif;?>">
                                 Введите текст.
                             </div>
                         </div>
                         <div class="col-sm-4 position-relative mb-3">
-                            <label for="term" class="form-label">Срок</label>
-                            <input type="text" class="form-control" id="term" name="term" value="Срок" required>
-                            <div class="invalid-tooltip">
+                            <label for="term_offer" class="form-label">Срок</label>
+                            <input type="text" class="form-control" id="term_offer" name="term_offer" value="Срок" required>
+                            <div class="invalid-tooltip <?php if (isset($errors['term_offer'])):?> d-block <?php endif;?>">
                                 Введите текст.
                             </div>
                         </div>
                         <div class="col-sm-4 position-relative mb-3">
                             <label for="front_number" class="form-label">Лиц №</label>
                             <input type="number" class="form-control" id="front_number" name="front_number" value="Лиц №" required>
-                            <div class="invalid-tooltip">
-                                Введите число.
+                            <div class="invalid-tooltip <?php if (isset($errors['front_number'])):?> d-block <?php endif;?>">
+                                <?php if (isset($errors['front_number'])):?>
+                                    <?= $errors['front_number']?>
+                                <?php else:?>
+                                    Введите число.
+                                <?php endif;?>
                             </div>
                         </div>
                         <div class="col-12 mt-4">

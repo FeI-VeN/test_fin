@@ -36,3 +36,13 @@ function getIp() {
         }
     }
 }
+
+function load_form($fillable = []){
+    $data = [];
+    foreach ($_POST as $key => $value){
+        if(in_array($key, $fillable)){
+            $data[$key] = $value;
+        }
+    }
+    return $data;
+}
