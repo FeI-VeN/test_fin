@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Lato-Regular';
+    src: local('Lato Regular'),
+    url('/public/assets/template/fonts/Lato-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Lato-Medium';
+    src: local('Lato Medium'),
+    url('/public/assets/template/fonts/Lato-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Lato-SemiBold';
+    src: local('Lato SemiBold'),
+    url('/public/assets/template/fonts/Lato-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'Lato-Bold';
+    src: local('Lato Bold'),
+    url('/public/assets/template/fonts/Lato-Bold.ttf') format('truetype');
+    font-weight: 700;
+}
