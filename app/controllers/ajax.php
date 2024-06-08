@@ -3,8 +3,7 @@ if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'
     return;
 }
 
-// Сниппет будет обрабатывать не один вид запросов, поэтому работать будем по запрашиваемому действию
-// Если в массиве POST нет действия - выход
+
 if (empty($_POST['action'])) {
     return;
 }
@@ -14,7 +13,6 @@ $res->status = "error";
 $is_error = 0;
 $action = $_POST['action'];
 switch ($action) {
-    // создать объявление
     case 'deleteOffer':
         if (isset($_POST['id_offer']) && (int)$_POST['id_offer'] > 0) {
             $id_offer = $_POST['id_offer'];

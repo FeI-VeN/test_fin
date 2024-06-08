@@ -13,8 +13,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if($data['date_end']){
         $date_end = DateTime::createFromFormat($format, $end_str);
     }
-//    dump($date_start);
-//    dump($date_end);
+
     if($date_start && $date_end){
         if($date_start <= $date_end){
             $where = " AND `time_click` >= '{$start_str}' AND `time_click` <= '{$end_str}'";
@@ -26,8 +25,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     } elseif ($date_end){
         $where = " AND `time_click` <= '{$end_str}'";
     }
-//    dump($date_start['date']);
-//    dd($date_end['date']);
+
 }
 
 $sources = $db->query("
