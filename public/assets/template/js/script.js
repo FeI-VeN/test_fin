@@ -9,8 +9,6 @@ $(document).ready(function(){
         heightHeader();
     });
 
-
-
     $('body').on('click', '.btn-test', function () {
         let btn = $(this),
             info = btn.attr('data-info');
@@ -62,26 +60,29 @@ $(document).ready(function(){
         setTimer(duration, duration_now);
     }
 
-    function setTimer(duration, duration_now) {
-        let time_end = duration_now === 0 ? duration : duration_now;
-        let timer = setInterval(function () {
-            time_end -= 1000;
-
-            if(time_end > 0) {
-                let minutes = Math.floor(time_end / 60000),
-                    seconds = Math.floor((time_end % 60000) / 1000);
-
-                $('.timer').text((minutes < 10 ? "0" + minutes : minutes) + ':' + (seconds < 10 ? "0" + seconds : seconds));
-            } else {
-                clearInterval(timer);
-                let time_now_sec = new Date().getTime();
-                localStorage.setItem('timerEnd', time_now_sec + duration); // Сброс конечного времени
-                setTimer(duration, 0); // Перезапуск таймера
-            }
-        }, 1000);
-    };
+    $('body').on('click', 'btn-delete-offer', function () {
+        console.log(1);
+    });
 });
 function heightHeader() {
     let headerHeight = $('.header').outerHeight(true);
     $('.wrapper__page').css('padding-top', headerHeight);
 }
+function setTimer(duration, duration_now) {
+    let time_end = duration_now === 0 ? duration : duration_now;
+    let timer = setInterval(function () {
+        time_end -= 1000;
+
+        if(time_end > 0) {
+            let minutes = Math.floor(time_end / 60000),
+                seconds = Math.floor((time_end % 60000) / 1000);
+
+            $('.timer').text((minutes < 10 ? "0" + minutes : minutes) + ':' + (seconds < 10 ? "0" + seconds : seconds));
+        } else {
+            clearInterval(timer);
+            let time_now_sec = new Date().getTime();
+            localStorage.setItem('timerEnd', time_now_sec + duration); // Сброс конечного времени
+            setTimer(duration, 0); // Перезапуск таймера
+        }
+    }, 1000);
+};

@@ -1,52 +1,68 @@
 <?php
+
+require_once CORE . '/classes/Validator.php';
 /**
  * @var Db $db
  */
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $errors = [];
-    $fillable = ['name_offers', 'file_loader', 'url_offer', 'rating', 'sum_offer', 'loan', 'term_offer', 'front_number', 'spec_offer'];
+    $fillable = ['name_offers', 'img', 'url_offer', 'rating', 'sum_offer', 'loan', 'term_offer', 'front_number', 'spec_offer'];
     $data = load_form($fillable);
-    if (empty(trim($data['name_offers']))){
-        $errors['name_offers'] = 'Название оффера пустое';
+//    dump($_FILES);
+//    dump($_FILES['img']);
+    if(isset($_FILES['img']) && $_FILES['img']['error'] === 0){
+        $data['img'] = $_FILES['img'];
+    } else {
+        $data['img'] = [];
     }
-    if (empty(trim($data['file_loader']))){
-        $errors['file_loader'] = 'Название оффера пустое';
-    }
-    if (empty(trim($data['url_offer']))){
-        $errors['url_offer'] = 'Название оффера пустое';
-    }
-    if (empty(trim($data['rating']))){
-        $errors['rating'] = 'Название оффера пустое';
-    }
-    if (empty(trim($data['sum_offer']))){
-        $errors['sum_offer'] = 'Название оффера пустое';
-    }
-    if (empty(trim($data['loan']))){
-        $errors['loan'] = 'Название оффера пустое';
-    }
-    if (empty(trim($data['term_offer']))){
-        $errors['term_offer'] = 'Название оффера пустое';
-    }
-    if (empty(trim($data['front_number']))){
-        $errors['front_number'] = 'Название оффера пустое';
-    }
-    if (empty(trim($data['spec_offer']))){
-        $errors['spec_offer'] = 'Название оффера пустое';
-    }
-    if(empty($errors)){
-        $db->query("INSERT INTO offers (`name`, `img`, `url_offer`, `rating`, `sum_offer`, `loan`, `term_offer`, `front_number`, `spec_offer`) VALUES(:name, :img, :url_offer, :rating, :sum_offer, :loan, :term_offer, front_number, :spec_offer)", [
-            'name' => $name,
-            'img'  => $img,
-            'url_offer' =>$url_offer,
-            'rating' => $rating,
-            'sum_offer' => $sum_offer,
-            'loan' => $loan,
-            'term_offer' => $term_offer,
-            'front_number' => $front_number,
-            'spec_offer' => $spec_offer
-        ]);
+    $validator = new Validator();
+    $rules = [
+        'name_offers' => [
+            'required' => true,
+        ],
+        'rating' => [
+            'min' => 0,
+        ],
+        'sum_offer' => [
+            'min' => 0,
+        ],
+        'img' => [
+            'required'       => true,
+            'ext'            => 'jpg|png',
+            'size'           => 30,
+            'min_resolution' => '100x100',
+            'max_resolution' => '450x450'
+        ]
+    ];
+    $validation = $validator->validate($data, $rules);
+//    dump($data);
+//    dd($validation->getErrors());
+    if(!$validation->hasErrors()){
+//        dump($data);
+//        dd(pathinfo($data['img']['name'], 4));
+        if(!empty($data['img']['name'])){
+            $dir = '/assets/uploads';
+            if(!is_dir(WWW . $dir)){
+                mkdir(WWW . $dir, 0755, true);
+            }
+            $extension = pathinfo($data['img']['name'], 4);
+            $file_name = uniqid() .'.'. $extension;
+            $file_path = WWW . $dir .'/'. $file_name;
+            move_uploaded_file($data['img']['tmp_name'], $file_path);
+            $data['img'] = $file_name;
+        } else {
+            $data['img'] = '';
+        }
+        $data['rating'] = str_replace(',','.', $data['rating']);
+//        $data['sum_offer'] = (int)$data['sum_offer'];
+//        $data['front_number'] = (int)$data['front_number'];
+//        dd($data);
+        if($db->query("INSERT INTO offers (`name`, `img`, `url_offer`, `rating`, `sum_offer`, `loan`, `term_offer`, `front_number`, `spec_offer`) VALUES(:name_offers, :img, :url_offer, :rating, :sum_offer, :loan, :term_offer, :front_number, :spec_offer)", $data)){
+            redirect('/add-offers');
+        }
     }
 }
+
+$offers = $db->query("SELECT * FROM offers ORDER BY id DESC")->findAll();
 
 include VIEWS . '/add_offers.php';

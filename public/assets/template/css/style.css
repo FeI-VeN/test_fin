@@ -211,6 +211,8 @@ body.body_visible {
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  object-position: left;
 }
 .offers__billet {
   text-transform: unset;
@@ -288,6 +290,10 @@ body.body_visible {
   color: #363A58;
   font-family: "Lato-Bold", sans-serif;
   font-weight: 600;
+}
+.td-url {
+  max-width: 210px;
+  word-wrap: break-word;
 }
 @media (max-width: 991px) {
   .offers__item {
