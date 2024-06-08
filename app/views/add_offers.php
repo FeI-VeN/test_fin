@@ -126,13 +126,18 @@
                                         <td class="text-center"><?= $offer['front_number']?></td>
                                         <td class="text-center"><?= htmlspecialchars($offer['spec_offer'], ENT_QUOTES)?></td>
                                         <td class="text-center">
-                                            <button type="button" class="btn btn-danger btn-delete-offer">
+                                            <button type="button" class="btn btn-danger btn-delete-offer" data-id_offer="<?= $offer['id']?>">
                                                 Удалить
                                             </button>
                                         </td>
                                     </tr>
                                 <?php endforeach;?>
                             <?php else:?>
+                                <tr>
+                                    <td colspan="11" class="text-center">
+                                        В данный момент тут ничего нет
+                                    </td>
+                                </tr>
                             <?php endif;?>
                         </tbody>
                     </table>

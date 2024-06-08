@@ -1,6 +1,3 @@
-$(window).on('load', function() {
-    $('body').addClass('body_visible');
-});
 $(document).ready(function(){
     setTimeout(function (){
         heightHeader()
@@ -9,33 +6,38 @@ $(document).ready(function(){
         heightHeader();
     });
 
-    $('body').on('click', '.btn-test', function () {
-        let btn = $(this),
-            info = btn.attr('data-info');
+    if(window.location.pathname === '/'){
+        let get_params = window.location.search.substring(1),
+            params_list = [],
+            new_params_list = [],
+            params = new FormData();
+        if(get_params.indexOf('&') !== -1){
+            params_list = get_params.split('&');
+            for(let i = 0; i < params_list.length; i++){
+                let item_list = params_list[i].split('=');
+                new_params_list[item_list[0]] = item_list[1];
+            }
+        } else {
+            params_list = get_params.split('=');
+            new_params_list[params_list[0]] = params_list[1];
+        }
 
-        let params = new FormData();
-        params.append('action', 'test');
-        params.append('info', info);
+        params.append('action', 'trackerSource');
+        params.append('utm_source', new_params_list['utm_source']);
 
-        btn.addClass('disabled').html('Выполняю...');
         $.ajax({
-            url: './core/elements/snippets/ajax.php',
+            url: 'https://test-fin.s-sobakoy-na-more.ru/ajax',
             type: 'POST',
             data: params,
             cache: false,
             dataType: 'json',
             processData: false,
-            contentType: false,
+            contentType: false
         }).done(function (a) {
-            if(a.status === 'success'){
-                btn.removeClass('disabled').html('Выпонить');
-                btn.closest('body').find('h1').text(a.info_text);
-            } else {
-                alert(a.text);
-            }
+            // alert(a.text);
         });
-        return false;
-    });
+
+    }
 
     if($('body').find('.timer').length > 0){
         let duration = 600 * 1000, // Длительность таймера в милисекундах (10 минут)
@@ -60,29 +62,57 @@ $(document).ready(function(){
         setTimer(duration, duration_now);
     }
 
-    $('body').on('click', 'btn-delete-offer', function () {
-        console.log(1);
+    $('body').on('click', '.btn-delete-offer', function () {
+        let btn    = $(this),
+            params = new FormData(),
+            id_offer   = btn.attr('data-id_offer');
+
+        params.append('action', 'deleteOffer');
+        params.append('id_offer', id_offer);
+        btn.addClass('disabled');
+        $.ajax({
+            url: 'https://test-fin.s-sobakoy-na-more.ru/ajax',
+            type: 'POST',
+            data: params,
+            cache: false,
+            dataType: 'json',
+            processData: false,
+            contentType: false
+        }).done(function (a) {
+            if (a.status == 'success') {
+                btn.fadeOut('slow', function() {
+                    btn.closest('tr').remove();
+                });
+            } else {
+                alert(a.text);
+            }
+            btn.removeClass('disabled');
+        });
+
     });
+    function setTimer(duration, duration_now) {
+        let time_end = duration_now === 0 ? duration : duration_now;
+        let timer = setInterval(function () {
+            time_end -= 1000;
+
+            if(time_end > 0) {
+                let minutes = Math.floor(time_end / 60000),
+                    seconds = Math.floor((time_end % 60000) / 1000);
+
+                $('.timer').text((minutes < 10 ? "0" + minutes : minutes) + ':' + (seconds < 10 ? "0" + seconds : seconds));
+            } else {
+                clearInterval(timer);
+                let time_now_sec = new Date().getTime();
+                localStorage.setItem('timerEnd', time_now_sec + duration); // Сброс конечного времени
+                setTimer(duration, 0); // Перезапуск таймера
+            }
+        }, 1000);
+    };
+});
+$(window).on('load', function() {
+    $('body').addClass('body_visible');
 });
 function heightHeader() {
     let headerHeight = $('.header').outerHeight(true);
     $('.wrapper__page').css('padding-top', headerHeight);
 }
-function setTimer(duration, duration_now) {
-    let time_end = duration_now === 0 ? duration : duration_now;
-    let timer = setInterval(function () {
-        time_end -= 1000;
-
-        if(time_end > 0) {
-            let minutes = Math.floor(time_end / 60000),
-                seconds = Math.floor((time_end % 60000) / 1000);
-
-            $('.timer').text((minutes < 10 ? "0" + minutes : minutes) + ':' + (seconds < 10 ? "0" + seconds : seconds));
-        } else {
-            clearInterval(timer);
-            let time_now_sec = new Date().getTime();
-            localStorage.setItem('timerEnd', time_now_sec + duration); // Сброс конечного времени
-            setTimer(duration, 0); // Перезапуск таймера
-        }
-    }, 1000);
-};

@@ -67,7 +67,7 @@ function redirect ($url = '') {
     }
 
     header("Location: {$redirect}");
-    die;
+//    die;
 }
 
 function get_file_extetion ($file_name){

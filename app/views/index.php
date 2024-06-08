@@ -162,12 +162,12 @@
                         <?php foreach ($offers as $offer) : ?>
                             <div class="offers__item">
                                 <div class="offers__block-img">
-                                    <img src="/public/assets/uploads/<?= $offer['img']?>" alt="" class="offers__img">
+                                    <img src="/public/assets/uploads/<?= $offer['img']?>" alt="<?= htmlspecialchars($offer['name'], ENT_QUOTES)?>" class="offers__img">
                                 </div>
                                 <?php if ($offer['spec_offer']):?>
                                     <div class="billet offers__billet bg--light-gray">
                                         <span>
-                                            <?= $offer['spec_offer']?>
+                                            <?= htmlspecialchars($offer['spec_offer'], ENT_QUOTES)?>
                                         </span>
                                     </div>
                                 <?php endif;?>
@@ -251,7 +251,7 @@
                                         </div>
                                         <div class="offers__condition-value condition-value">
                                             <span class="condition-value__txt">
-                                                <?= $offer['loan']?>
+                                                <?= htmlspecialchars($offer['loan'], ENT_QUOTES)?>
                                             </span>
                                         </div>
                                     </div>
@@ -263,7 +263,7 @@
                                         </div>
                                         <div class="offers__condition-value condition-value">
                                             <span class="condition-value__txt">
-                                                <?= $offer['term_offer']?>
+                                                <?= htmlspecialchars($offer['term_offer'], ENT_QUOTES)?>
                                             </span>
                                         </div>
                                     </div>
@@ -273,14 +273,14 @@
                                         Лиц. №<?= $offer['front_number']?>
                                     </p>
                                 </div>
-                                <noindex class="offers__btn-shell">
-                                    <a href="/" class="offers__btn bg--blue txt-white">
+                                <div class="offers__btn-shell">
+                                    <a href="/tracker?offer_id=<?= $offer['id']?>" class="offers__btn bg--blue txt-white">
                                         Получить деньги
                                     </a>
-                                </noindex>
-                                <noindex class="offers__link-shell">
-                                    <a href="/" class="offers__link"></a>
-                                </noindex>
+                                </div>
+                                <div class="offers__link-shell">
+                                    <a href="/tracker?offer_id=<?= $offer['id']?>" class="offers__link"></a>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
