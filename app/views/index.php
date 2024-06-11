@@ -274,12 +274,12 @@
                                     </p>
                                 </div>
                                 <div class="offers__btn-shell">
-                                    <a href="/tracker?offer_id=<?= $offer['id']?>" class="offers__btn bg--blue txt-white">
+                                    <a href="/tracker?offer_id=<?= $offer['id']?>" class="offers__btn bg--blue txt-white" target="_blank">
                                         Получить деньги
                                     </a>
                                 </div>
                                 <div class="offers__link-shell">
-                                    <a href="/tracker?offer_id=<?= $offer['id']?>" class="offers__link"></a>
+                                    <a href="/tracker?offer_id=<?= $offer['id']?>" class="offers__link" target="_blank"></a>
                                 </div>
                             </div>
                         <?php endforeach; ?>
